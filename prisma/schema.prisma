@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  characters Characters[]
+
+  @@map("users")
+}
+
+model Characters {
+  id         Int      @id @default(autoincrement())
+  name       String
+  race       String
+  avatar_url String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       Users    @relation(fields: [user_id], references: [id])
+  user_id    Int
+
+  abilities Abilities[]
+  inventory Inventory?
+
+  @@map("characters")
+}
+
+model Abilities {
+  id    Int             @id @default(autoincrement())
+  name  AbilityTypeEnum
+  total Int
+  bonus Int
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  character    Characters @relation(fields: [character_id], references: [id])
+  character_id Int
+
+  @@map("abilities")
+}
+
+model Inventory {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  character    Characters @relation(fields: [character_id], references: [id])
+  character_id Int        @unique
+
+  items InventoryItems[]
+
+  @@map("inventory")
+}
+
+model InventoryItems {
+  id     Int          @id @default(autoincrement())
+  name   String
+  type   ItemTypeEnum
+  damage Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory_id Int
+
+  @@map("inventory_items")
+}
+
+enum AbilityTypeEnum {
+  Strenght
+  Dexterity
+  Agility
+  Magic
+  Science
+}
+
+enum ItemTypeEnum {
+  Sword
+  Shield
+  Armor
+  Potion
+  Scroll
+  Axe
+  Bow
+  Staff
+  Wand
+  Dagger
+  Mace
+  Hammer
+  Spear
+  Crossbow
+}
