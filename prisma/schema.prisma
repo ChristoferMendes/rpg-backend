@@ -26,7 +26,7 @@ model Users {
 model Characters {
   id         Int      @id @default(autoincrement())
   name       String
-  race       String
+  race       RacesEnum
   avatar_url String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -80,6 +80,14 @@ model InventoryItems {
   inventory_id Int
 
   @@map("inventory_items")
+}
+
+enum RacesEnum {
+  Human
+  Half_Elf
+  Dwarf
+  Dragonborn
+  Beastfolk
 }
 
 enum AbilityTypeEnum {
