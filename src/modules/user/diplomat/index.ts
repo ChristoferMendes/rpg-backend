@@ -24,6 +24,16 @@ class UserDiplomat {
 
     return user?.password === password ? res.status(200).json(user) : res.status(401).send('Invalid credentials');
   }
+
+  async getAllCharactersByUserId(req: Request, res: Response) {
+    const { id: user_id } = req.params;
+
+    const characters = await prisma.users.findUnique({ where: { id: Number(user_id) }, select: { characters: true } })
+
+    if (!characters) return res.status(404).send('User not found');
+
+    return res.status(200).json(characters)
+  }
 }
 
 export const userDiplomat = new UserDiplomat();
