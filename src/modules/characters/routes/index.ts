@@ -5,3 +5,4 @@ export const characterRouter = Router();
 
 characterRouter.get('/', characterDiplomat.getAllByUserId)
 characterRouter.post('/', characterDiplomat.create)
+characterRouter.get('/:id', characterDiplomat.getById)
