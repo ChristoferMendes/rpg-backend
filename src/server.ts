@@ -5,5 +5,5 @@ config()
 
 app.use(routes)
 
-const PORT = 4000;
+const PORT = 8000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
